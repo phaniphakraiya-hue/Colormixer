@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>คำถาม</title>
+
+<style>
+    body{
+        font-family: Arial, sans-serif;
+        background: #808080;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container{
+        background: rgb(50, 50, 52);
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        text-align: center;
+        width: 700px;
+    }
+
+    h2{
+        margin-bottom: 30px;
+    }
+
+    button{
+        padding: 10px 25px;
+        border: none;
+        background: #444;
+        color: white;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    button:hover{
+        background: #666;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2 id="questionText"></h2>
+    <button onclick="goNext()">ถัดไป</button>
+</div>
+
+<script>
+
+// ชุดคำถาม
+const set1 = [
+    "กาแฟ",
+    "ช็อกโกแลต",
+    "ลิ้นจี่",
+    "สตรอว์เบอร์รี"
+];
+
+const set2 = [
+    "ลาเต้",
+    "มอคค่า",
+    "โกโก้",
+    "บราวนี่",
+    "เครื่องดื่มลิ้นจี่",
+    "บรรจุภัณฑ์ลิ้นจี่",
+    "ผลของสตรอว์เบอร์รี",
+    "เอสเปรสโซ่",
+    "อเมริกาโน่",
+    "ดาร์กช็อกโกแลต",
+    "ช็อกโกแลตนม",
+    "บรรจุภัณฑ์สตรอว์เบอร์รี",
+    "ผลของลิ้นจี่",
+    "เครื่องดื่มสตรอว์เบอร์รี",
+    "คาปูชิโน่"
+];
+
+// ฟังก์ชันสุ่ม
+function shuffle(array){
+    return array.sort(() => Math.random() - 0.5);
+}
+
+// ถ้ายังไม่เคยสร้างลำดับคำถาม
+if(!localStorage.getItem("questionOrder")){
+
+    const shuffledSet1 = shuffle([...set1]);
+    const shuffledSet2 = shuffle([...set2]);
+
+    const allQuestions = [...shuffledSet1, ...shuffledSet2];
+
+    localStorage.setItem("questionOrder", JSON.stringify(allQuestions));
+    localStorage.setItem("currentQuestion", 0);
+}
+
+// โหลดข้อมูล
+const questions = JSON.parse(localStorage.getItem("questionOrder"));
+let currentQuestion = parseInt(localStorage.getItem("currentQuestion"));
+
+// แสดงคำถาม
+document.getElementById("questionText").innerText =
+    "กรุณาผสมสีที่สื่อถึง " + questions[currentQuestion];
+
+// ไปหน้าผสมสี
+function goNext(){
+    window.location.href = "page4.html";
+}
+
+</script>
+
+</body>
+</html>

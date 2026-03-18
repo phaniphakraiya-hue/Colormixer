@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title></title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    background:black;
+}
+</style>
+
+</head>
+<body>
+
+<audio id="sound" src="5s.mp3"></audio>
+
+<script>
+
+window.onload = function(){
+
+    const readyMode = localStorage.getItem("readyMode");
+
+    // โหมดกดเมื่อพร้อม (หน้าดำ คลิกไปต่อ)
+    if(readyMode == "true"){
+
+        document.body.onclick = function(){
+            window.location.href = "page3.html";
+        }
+
+    }
+    else{
+
+        const audio = document.getElementById("sound");
+        audio.play().catch(()=>{});
+
+        // พัก 3 วินาที
+        setTimeout(function(){
+            window.location.href = "page3.html";
+        },3000);
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>คำอธิบายก่อนเริ่มการผสมสี</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #808080; /* พื้นหลังเทาเข้ม */
+            display: flex;  
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+        }
+
+        .container {
+            background: #3a3a3a; /* กล่องสีเทา */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.4);
+            width: 420px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 25px;
+            background-color: #444; /* สีเดียวกับหน้าอื่น */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #666; /* hover เหมือนกัน */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>คำอธิบายก่อนเริ่มการผสมสี</h2>
+    
+    <p>
+        งานวิจัยนี้ ขอให้ผู้เข้าร่วมการทดลองได้ทำการผสมสี
+        ตามหัวข้อที่กำหนด แล้วให้ผสมสีตามความทรงจำและความรู้สึกของตนเอง
+    </p>
+
+    <p>
+        กรุณาอ่านคำแนะนำให้เข้าใจก่อนเริ่มทำกิจกรรม
+    </p>
+
+    <p>
+        แถบ H = Hue คือ สีสัน <br>
+        แถบ S = Saturation คือ ปรับความอิ่มตัวของสี<br>
+        แถบ L = Lightness คือ ปรับค่าความสว่าง
+    </p>
+
+    <button onclick="goToNext()">ถัดไป</button>
+</div>
+
+<script>
+    function goToNext() {
+        window.location.href = "page2.html";
+    }
+</script>
+
+</body>
+</html>

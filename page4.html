@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>หน้าผสมสี</title>
+
+<style>
+
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    font-family: Arial, sans-serif;
+    background:#808080;
+    color:white;
+}
+
+h2{
+    text-align:center;
+    margin-top:20px;
+    margin-bottom:5px;
+}
+
+.question-text{
+    text-align:center;
+    font-size:18px;
+    opacity:0.85;
+    margin-bottom:20px;
+}
+
+.center-area{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+}
+
+.color-preview{
+    width:2cm;
+    height:2cm;
+    border-radius:15px;
+    border:4px solid #888;
+    cursor:pointer;
+    transition:0.3s;
+    background:white;
+}
+
+.color-preview:hover{
+    transform:scale(1.1);
+}
+
+.hsl-area{
+    padding:30px 40px;
+}
+
+.hsl-row{
+    display:flex;
+    justify-content:center;
+    gap:100px;
+}
+
+.hsl-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+input[type="range"]{
+    -webkit-appearance:none;
+    appearance:none;
+    width:250px;
+    height:8px;
+    background:#bfbfbf;
+    border-radius:10px;
+    outline:none;
+}
+
+input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    background:#555;
+    cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2></h2>
+
+<p id="questionText" class="question-text"></p>
+
+<div class="center-area">
+    <div id="colorBox" class="color-preview"></div>
+</div>
+
+<div class="hsl-area">
+
+<div class="hsl-row">
+
+<div class="hsl-item">
+<label>H</label>
+<input type="range" id="hue" min="0" max="360" value="0">
+</div>
+
+<div class="hsl-item">
+<label>S</label>
+<input type="range" id="sat" min="0" max="100" value="0">
+</div>
+
+<div class="hsl-item">
+<label>L</label>
+<input type="range" id="light" min="0" max="100" value="100">
+</div>
+
+</div>
+</div>
+
+<script>
+
+/* slider */
+const hue = document.getElementById("hue");
+const sat = document.getElementById("sat");
+const light = document.getElementById("light");
+const colorBox = document.getElementById("colorBox");
+
+/* โหลดคำถาม */
+const questions = JSON.parse(localStorage.getItem("questionOrder")) || [];
+let currentQuestion = parseInt(localStorage.getItem("currentQuestion")) || 0;
+
+/* แสดงคำถาม */
+document.getElementById("questionText").innerText =
+"กรุณาผสมสีที่สื่อถึง " + questions[currentQuestion];
+
+/* เริ่มจับเวลา */
+let startTime = Date.now();
+
+/* เปลี่ยนสี */
+function updateColor(){
+
+    const h = hue.value;
+    const s = sat.value;
+    const l = light.value;
+
+    colorBox.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
+
+}
+
+/* HSL → HEX */
+function hslToHex(h,s,l){
+
+    s/=100;
+    l/=100;
+
+    const k=n=>(n+h/30)%12;
+    const a=s*Math.min(l,1-l);
+
+    const f=n =>
+    l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1)));
+
+    return "#" + [f(0),f(8),f(4)]
+    .map(x=>Math.round(x*255).toString(16).padStart(2,"0"))
+    .join("");
+
+}
+
+/* slider */
+hue.addEventListener("input",function(){
+
+    if(sat.value==0){
+        sat.value=100;
+        light.value=50;
+    }
+
+    updateColor();
+
+});
+
+sat.addEventListener("input",updateColor);
+light.addEventListener("input",updateColor);
+
+/* คลิกสี = บันทึก */
+colorBox.addEventListener("click",function(){
+
+    const h=hue.value;
+    const s=sat.value;
+    const l=light.value;
+
+    const hex=hslToHex(h,s,l);
+
+    const reactionTime = Date.now() - startTime;
+
+    let trials = JSON.parse(localStorage.getItem("trials")) || [];
+
+    trials.push({
+
+        question: questions[currentQuestion],
+
+        hue:h,
+        saturation:s,
+        lightness:l,
+        hex:hex,
+
+        reactionTime:reactionTime,
+
+        time:new Date().toISOString()
+
+    });
+
+    localStorage.setItem("trials",JSON.stringify(trials));
+
+    /* ไปคำถามถัดไป */
+
+    let nextQuestion = currentQuestion + 1;
+
+    if(nextQuestion < questions.length){
+
+        localStorage.setItem("currentQuestion",nextQuestion);
+
+        /* จุดพักกดเมื่อพร้อม */
+
+        if(nextQuestion==4 || nextQuestion==12){
+
+            localStorage.setItem("readyMode","true");
+
+        }else{
+
+            localStorage.setItem("readyMode","false");
+
+        }
+
+        window.location.href="page5.html";
+
+    }else{
+
+        localStorage.removeItem("currentQuestion");
+
+        window.location.href="page6.html";
+
+    }
+
+});
+
+updateColor();
+
+</script>
+
+</body>
+</html>

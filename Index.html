@@ -1,0 +1,150 @@
+<!DOCTYPE html>                          
+
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>หน้ากรอกข้อมูล</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #808080;
+    margin: 0;
+    color: white;
+}
+
+.form-container {
+    background: #3a3a3a;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    width: 320px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    border: none;
+}
+
+.gender-group{
+    display:flex;
+    gap:25px;
+    margin-top:5px;
+}
+
+input[type="radio"] {
+    margin-right:5px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #666;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="form-container">
+
+<h2>กรอกข้อมูล</h2>
+
+<form id="myForm">
+
+<div class="form-group">
+<label>รหัส:</label>
+<input type="text" id="userId" required>
+</div>
+
+<div class="form-group">
+<label>เพศ:</label>
+
+<div class="gender-group">
+<label><input type="radio" name="gender" value="ชาย" required> ชาย</label>
+<label><input type="radio" name="gender" value="หญิง"> หญิง</label>
+<label><input type="radio" name="gender" value="อื่นๆ"> อื่นๆ</label>
+</div>
+
+</div>
+
+<div class="form-group">
+<label>อายุ:</label>
+<input type="number" id="age" required min="1">
+</div>
+
+<button type="submit">ถัดไป</button>
+
+</form>
+</div>
+
+<script>
+
+localStorage.clear();
+
+document.getElementById("myForm").addEventListener("submit", function(event){
+
+event.preventDefault();
+
+const userId=document.getElementById("userId").value;
+const age=document.getElementById("age").value;
+
+const genderInput=document.querySelector('input[name="gender"]:checked');
+
+if(userId==="" || age===""){
+alert("กรุณากรอกข้อมูลให้ครบ");
+return;
+}
+
+if(!genderInput){
+alert("กรุณาเลือกเพศ");
+return;
+}
+
+const gender=genderInput.value;
+
+localStorage.setItem("userId",userId);
+localStorage.setItem("gender",gender);
+localStorage.setItem("age",age);
+
+window.location.href="page1.html";
+
+});
+
+</script>
+
+</body>
+</html>

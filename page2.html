@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>หน้าสอน: ขั้นตอนการผสมสี</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    font-family: Arial, sans-serif;
+    background:#808080;
+    color:white;
+}
+
+h2{
+    text-align:center;
+    margin-top:20px;
+    margin-bottom:5px;
+}
+
+.question-text{
+    text-align:center;
+    font-size:18px;
+    opacity:0.85;
+    margin-bottom:20px;
+}
+
+.center-area{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+}
+
+.color-preview{
+    width:2cm;
+    height:2cm;
+    border-radius:15px;
+    border:4px solid #888;
+    cursor:pointer;
+    transition:0.3s;
+    background:white;
+}
+
+.instruction-text{
+    margin-top:18px;
+    font-size:17px;
+    opacity:0.85;
+    text-align:center;
+}
+
+.hsl-area{
+    padding:30px 40px;
+}
+
+.hsl-row{
+    display:flex;
+    justify-content:center;
+    gap:100px;
+}
+
+.hsl-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+input[type="range"]{
+    -webkit-appearance:none;
+    appearance:none;
+    width:250px;
+    height:8px;
+    background:#bfbfbf;
+    border-radius:10px;
+    outline:none;
+}
+
+input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    background:#555;
+    cursor:pointer;
+    border:none;
+}
+</style>
+</head>
+<body>
+
+<h2>ขั้นตอนการผสมสี</h2>
+
+<p class="question-text">
+กรุณาผสมสีที่สื่อถึง องุ่น
+</p>
+
+<div class="center-area">
+    <div id="colorBox" class="color-preview"></div>
+
+    <p class="instruction-text">
+    </p>
+</div>
+
+<div class="hsl-area">
+    <div class="hsl-row">
+
+        <div class="hsl-item">
+            <label>H</label>
+            <input type="range" id="hue" min="0" max="360" value="0">
+        </div>
+
+        <div class="hsl-item">
+            <label>S</label>
+            <input type="range" id="sat" min="0" max="100" value="0">
+        </div>
+
+        <div class="hsl-item">
+            <label>L</label>
+            <input type="range" id="light" min="0" max="100" value="100">
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+const hue = document.getElementById("hue");
+const sat = document.getElementById("sat");
+const light = document.getElementById("light");
+const colorBox = document.getElementById("colorBox");
+
+// เริ่มต้นเป็นสีขาวจริง
+colorBox.style.backgroundColor = "hsl(0,0%,100%)";
+
+function updateColor(){
+    const h = hue.value;
+    const s = sat.value;
+    const l = light.value;
+    colorBox.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
+}
+
+// ถ้าเลื่อน H แล้ว S ยัง 0 → ทำให้เห็นสีทันที
+hue.addEventListener("input", function(){
+    if(sat.value == 0){
+        sat.value = 100;
+        light.value = 50;
+    }
+    updateColor();
+});
+
+sat.addEventListener("input", updateColor);
+light.addEventListener("input", updateColor);
+
+// คลิกกรอบ = ไปหน้า page3
+colorBox.addEventListener("click", function(){
+    window.location.href = "page3.html";
+});
+
+</script>
+
+</body>
+</html>   
