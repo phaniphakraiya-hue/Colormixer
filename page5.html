@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="th">
 <head>
 <meta charset="UTF-8">
@@ -10,42 +9,57 @@ body{
     margin:0;
     height:100vh;
     background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+#text{
+    display:none;
+    color:white;
+    font-size:24px;
+    text-align:center;
 }
 </style>
 
 </head>
 <body>
 
+<div id="text">
+โปรดพักสายตาสักครู่<br>
+เมื่อพร้อมแล้วให้คลิกหน้าจอเพื่อดำเนินการทดลองต่อ
+</div>
+
 <audio id="sound" src="5s.mp3"></audio>
 
 <script>
-
 window.onload = function(){
 
     const readyMode = localStorage.getItem("readyMode");
+    const text = document.getElementById("text");
 
-    // โหมดกดเมื่อพร้อม (หน้าดำ คลิกไปต่อ)
+    // ✅ โหมดกดเมื่อพร้อม
     if(readyMode == "true"){
 
+        text.style.display = "block";
+
         document.body.onclick = function(){
-            window.location.href = "page3.html";
+            localStorage.removeItem("readyMode"); // เคลียร์ค่า
+            window.location.href = "page3.html";  // ไปหน้าถัดไป
         }
 
     }
     else{
-
+        // โหมด 3 วินาที (เผื่อใช้ซ้ำ)
         const audio = document.getElementById("sound");
         audio.play().catch(()=>{});
 
-        // พัก 3 วินาที
         setTimeout(function(){
             window.location.href = "page3.html";
         },3000);
-
     }
 
 }
-
 </script>
 
 </body>
