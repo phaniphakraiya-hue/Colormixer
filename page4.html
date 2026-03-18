@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="th">
 <head>
 <meta charset="UTF-8">
@@ -44,12 +43,7 @@ h2{
     border-radius:15px;
     border:4px solid #888;
     cursor:pointer;
-    transition:0.3s;
     background:white;
-}
-
-.color-preview:hover{
-    transform:scale(1.1);
 }
 
 .hsl-area{
@@ -88,7 +82,6 @@ input[type="range"]::-webkit-slider-thumb{
 }
 
 </style>
-
 </head>
 
 <body>
@@ -98,7 +91,7 @@ input[type="range"]::-webkit-slider-thumb{
 <p id="questionText" class="question-text"></p>
 
 <div class="center-area">
-    <div id="colorBox" class="color-preview"></div>
+<div id="colorBox" class="color-preview"></div>
 </div>
 
 <div class="hsl-area">
@@ -125,35 +118,68 @@ input[type="range"]::-webkit-slider-thumb{
 
 <script>
 
-/* slider */
+/* element */
+
 const hue = document.getElementById("hue");
 const sat = document.getElementById("sat");
 const light = document.getElementById("light");
 const colorBox = document.getElementById("colorBox");
+const questionText = document.getElementById("questionText");
 
 /* โหลดคำถาม */
+
 const questions = JSON.parse(localStorage.getItem("questionOrder")) || [];
-let currentQuestion = parseInt(localStorage.getItem("currentQuestion")) || 0;
+let currentQuestion = Number(localStorage.getItem("currentQuestion")) || 0;
 
 /* แสดงคำถาม */
-document.getElementById("questionText").innerText =
-"กรุณาผสมสีที่สื่อถึง " + questions[currentQuestion];
+
+if(questions.length === 0){
+
+    questionText.innerText = "ไม่พบคำถาม";
+
+}else{
+
+    questionText.innerText =
+    "กรุณาผสมสีที่สื่อถึง " + questions[currentQuestion];
+
+}
 
 /* เริ่มจับเวลา */
+
 let startTime = Date.now();
 
-/* เปลี่ยนสี */
+/* อัปเดตสี */
+
 function updateColor(){
 
-    const h = hue.value;
-    const s = sat.value;
-    const l = light.value;
+    const h = Number(hue.value);
+    const s = Number(sat.value);
+    const l = Number(light.value);
 
     colorBox.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
 
 }
 
+/* slider */
+
+hue.addEventListener("input",function(){
+
+    if(sat.value == 0){
+
+        sat.value = 100;
+        light.value = 50;
+
+    }
+
+    updateColor();
+
+});
+
+sat.addEventListener("input",updateColor);
+light.addEventListener("input",updateColor);
+
 /* HSL → HEX */
+
 function hslToHex(h,s,l){
 
     s/=100;
@@ -171,29 +197,17 @@ function hslToHex(h,s,l){
 
 }
 
-/* slider */
-hue.addEventListener("input",function(){
+/* คลิกเพื่อบันทึก */
 
-    if(sat.value==0){
-        sat.value=100;
-        light.value=50;
-    }
-
-    updateColor();
-
-});
-
-sat.addEventListener("input",updateColor);
-light.addEventListener("input",updateColor);
-
-/* คลิกสี = บันทึก */
 colorBox.addEventListener("click",function(){
 
-    const h=hue.value;
-    const s=sat.value;
-    const l=light.value;
+    colorBox.style.pointerEvents="none";
 
-    const hex=hslToHex(h,s,l);
+    const h = Number(hue.value);
+    const s = Number(sat.value);
+    const l = Number(light.value);
+
+    const hex = hslToHex(h,s,l);
 
     const reactionTime = Date.now() - startTime;
 
@@ -203,14 +217,15 @@ colorBox.addEventListener("click",function(){
 
         question: questions[currentQuestion],
 
-        hue:h,
-        saturation:s,
-        lightness:l,
-        hex:hex,
+        h: h,
+        s: s,
+        l: l,
 
-        reactionTime:reactionTime,
+        hex: hex,
 
-        time:new Date().toISOString()
+        reactionTime: reactionTime,
+
+        time: new Date().toISOString()
 
     });
 
@@ -224,9 +239,7 @@ colorBox.addEventListener("click",function(){
 
         localStorage.setItem("currentQuestion",nextQuestion);
 
-        /* จุดพักกดเมื่อพร้อม */
-
-        if(nextQuestion==4 || nextQuestion==12){
+        if(nextQuestion == 4 || nextQuestion == 12){
 
             localStorage.setItem("readyMode","true");
 
@@ -236,17 +249,17 @@ colorBox.addEventListener("click",function(){
 
         }
 
-        window.location.href="page5.html";
+        window.location.href = "page5.html";
 
     }else{
 
-        localStorage.removeItem("currentQuestion");
-
-        window.location.href="page6.html";
+        window.location.href = "page6.html";
 
     }
 
 });
+
+/* เริ่มสี */
 
 updateColor();
 
