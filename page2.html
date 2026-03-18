@@ -155,12 +155,10 @@ hue.addEventListener("input", function(){
 sat.addEventListener("input", updateColor);
 light.addEventListener("input", updateColor);
 
-// คลิกกรอบ = ไปหน้า page3
+// 🔥 แก้เฉพาะตรงนี้
 colorBox.addEventListener("click", function(){
-    window.location.href = "page3.html";
+    localStorage.setItem("readyMode","true"); // เพิ่ม
+    window.location.href = "page5.html";      // เปลี่ยนจาก page3 → page5
 });
 
 </script>
-
-</body>
-</html>   
