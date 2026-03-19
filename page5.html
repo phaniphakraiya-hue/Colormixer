@@ -2,8 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>พัก</title>
-
+<title>พักสายตา</title>
 <style>
 body{
     margin:0;
@@ -12,58 +11,57 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    color:white;
-    font-size:24px;
-    text-align:center;
 }
-
-#text{
+#restText{
+    color:white;
+    font-size:28px;
+    text-align:center;
     display:none;
-    cursor:pointer;
+    font-family: Arial, sans-serif;
 }
 </style>
 </head>
-
 <body>
 
-<div id="text">
-โปรดพักสายตาสักครู่<br>
-เมื่อพร้อมแล้วให้คลิกหน้าจอเพื่อดำเนินการต่อ
-</div>
+<div id="restText"></div>
 
 <script>
 window.onload = function(){
 
-    const mode = localStorage.getItem("readyMode");
+    const readyMode = localStorage.getItem("readyMode");   // หลังหน้า 2 → เริ่มการทดลอง
+    const finalPause = localStorage.getItem("finalPause"); // หลังคำถามสุดท้ายของชุด
+    const restText = document.getElementById("restText");
 
-    const questions = JSON.parse(localStorage.getItem("questionOrder")) || [];
-    const current = parseInt(localStorage.getItem("currentQuestion")) || 0;
-
-    // 🔥 ฟังก์ชันตัดสินว่าจะไปไหน
-    function goNext(){
-        if(current >= questions.length){
-            // ✅ ทำครบแล้ว → ไปหน้าสุดท้าย
-            window.location.href = "page6.html";
-        }else{
-            // 🔄 ยังไม่ครบ → ไปผสมสีต่อ
-            window.location.href = "page4.html";
-        }
-    }
-
-    // 🟢 โหมดกดเมื่อพร้อม
-    if(mode === "true"){
-        const text = document.getElementById("text");
-        text.style.display = "block";
+    // หน้า 2 → กดเมื่อพร้อม (เริ่มการทดลอง)
+    if(readyMode === "true"){
+        restText.style.display = "block";
+        restText.innerHTML = "โปรดพักสายตาสักครู่<br>กดเมื่อพร้อม";
+        document.body.style.cursor = "pointer";
 
         document.body.onclick = function(){
-            goNext();
+            localStorage.removeItem("readyMode");
+            window.location.href = "page3.html"; // ไปคำถามชุดแรก
         }
     }
+
+    // คำถามสุดท้ายของชุด → กดเมื่อพร้อม
+    else if(finalPause === "true"){
+        restText.style.display = "block";
+        restText.innerHTML = "โปรดพักสายตาสักครู่<br>กดเมื่อพร้อม";
+        document.body.style.cursor = "pointer";
+
+        document.body.onclick = function(){
+            localStorage.removeItem("finalPause");
+            window.location.href = "page3.html"; // ไปคำถามชุดถัดไป
+        }
+    }
+
+    // หน้าอื่น ๆ → พัก 3 วิ + เสียง (สามารถใส่ audio ใน page4)
     else{
-        // 🔵 พัก 3 วิ
+        // ตัวนี้ไม่ใช่ page5 → สามารถเพิ่มเสียงที่ page4 ได้
         setTimeout(function(){
-            goNext();
-        },3000);
+            window.location.href = "page3.html"; 
+        }, 3000); // 3 วินาที
     }
 
 }
