@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>เริ่มการทดลอง</title>
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    cursor: pointer; /* ให้รู้ว่าคลิกได้ */
+}
+
+h1 {
+    font-size: 36px;
+    margin: 0;
+}
+
+p {
+    font-size: 20px;
+    margin-top: 15px;
+    opacity: 0.8;
+}
+</style>
+</head>
+<body>
+
+<h1>เริ่มการทดลอง</h1>
+<p>เมื่อพร้อมแล้วคลิกหน้าจอ</p>
+
+<script>
+document.body.addEventListener("click", function() {
+    // เปลี่ยนไปหน้าถัดไป เช่น page3.html
+    window.location.href = "page3.html";
+});
+</script>
+
+</body>
+</html>
