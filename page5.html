@@ -17,7 +17,6 @@ body{
     text-align:center;
 }
 
-/* ข้อความ (ซ่อนก่อน) */
 #text{
     display:none;
     cursor:pointer;
@@ -37,19 +36,33 @@ window.onload = function(){
 
     const mode = localStorage.getItem("readyMode");
 
-    // 🟢 โหมดกดเมื่อพร้อม (ก่อนคำถามสุดท้าย)
+    const questions = JSON.parse(localStorage.getItem("questionOrder")) || [];
+    const current = parseInt(localStorage.getItem("currentQuestion")) || 0;
+
+    // 🔥 ฟังก์ชันตัดสินว่าจะไปไหน
+    function goNext(){
+        if(current >= questions.length){
+            // ✅ ทำครบแล้ว → ไปหน้าสุดท้าย
+            window.location.href = "page6.html";
+        }else{
+            // 🔄 ยังไม่ครบ → ไปผสมสีต่อ
+            window.location.href = "page4.html";
+        }
+    }
+
+    // 🟢 โหมดกดเมื่อพร้อม
     if(mode === "true"){
         const text = document.getElementById("text");
         text.style.display = "block";
 
         document.body.onclick = function(){
-            window.location.href = "page6.html";
+            goNext();
         }
     }
     else{
-        // 🔵 โหมดพัก 3 วิ (หน้าดำล้วน)
+        // 🔵 พัก 3 วิ
         setTimeout(function(){
-            window.location.href = "page6.html";
+            goNext();
         },3000);
     }
 
