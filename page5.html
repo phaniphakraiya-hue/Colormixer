@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>คำถามข้อที่ 5</title>
+<title>พัก</title>
 
 <style>
 body{
@@ -16,33 +16,43 @@ body{
     font-size:24px;
     text-align:center;
 }
-button{
-    margin-top:20px;
-    font-size:18px;
-    padding:10px 20px;
+
+/* ข้อความ (ซ่อนก่อน) */
+#text{
+    display:none;
+    cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div>
-    คำถามข้อที่ 5<br>
-    (ใส่คำถามผสมสีของคุณตรงนี้)
-    <br><br>
-    <button onclick="nextQuestion()">ถัดไป</button>
+<div id="text">
+โปรดพักสายตาสักครู่<br>
+เมื่อพร้อมแล้วให้คลิกหน้าจอเพื่อดำเนินการต่อ
 </div>
 
 <script>
-function nextQuestion(){
-    // 🟢 โหมด "กดเมื่อพร้อม"
-    localStorage.setItem("readyMode", "true");
+window.onload = function(){
 
-    // ไปคำถามสุดท้ายของชุด
-    localStorage.setItem("nextPage", "page6.html");
+    const mode = localStorage.getItem("readyMode");
 
-    // ไปหน้าพัก
-    window.location.href = "rest.html";
+    // 🟢 โหมดกดเมื่อพร้อม (ก่อนคำถามสุดท้าย)
+    if(mode === "true"){
+        const text = document.getElementById("text");
+        text.style.display = "block";
+
+        document.body.onclick = function(){
+            window.location.href = "page6.html";
+        }
+    }
+    else{
+        // 🔵 โหมดพัก 3 วิ (หน้าดำล้วน)
+        setTimeout(function(){
+            window.location.href = "page6.html";
+        },3000);
+    }
+
 }
 </script>
 
