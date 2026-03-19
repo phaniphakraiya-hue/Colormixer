@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title>คำถามข้อที่ 5</title>
 
 <style>
 body{
@@ -12,53 +12,37 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-}
-
-#text{
-    display:none;
     color:white;
     font-size:24px;
     text-align:center;
 }
+button{
+    margin-top:20px;
+    font-size:18px;
+    padding:10px 20px;
+}
 </style>
-
 </head>
+
 <body>
 
-<div id="text">
-โปรดพักสายตาสักครู่<br>
-เมื่อพร้อมแล้วให้คลิกหน้าจอเพื่อดำเนินการทดลองต่อ
+<div>
+    คำถามข้อที่ 5<br>
+    (ใส่คำถามผสมสีของคุณตรงนี้)
+    <br><br>
+    <button onclick="nextQuestion()">ถัดไป</button>
 </div>
 
-<audio id="sound" src="5s.mp3"></audio>
-
 <script>
-window.onload = function(){
+function nextQuestion(){
+    // 🟢 โหมด "กดเมื่อพร้อม"
+    localStorage.setItem("readyMode", "true");
 
-    const readyMode = localStorage.getItem("readyMode");
-    const text = document.getElementById("text");
+    // ไปคำถามสุดท้ายของชุด
+    localStorage.setItem("nextPage", "page6.html");
 
-    // ✅ โหมดกดเมื่อพร้อม
-    if(readyMode == "true"){
-
-        text.style.display = "block";
-
-        document.body.onclick = function(){
-            localStorage.removeItem("readyMode"); // เคลียร์ค่า
-            window.location.href = "page3.html";  // ไปหน้าถัดไป
-        }
-
-    }
-    else{
-        // โหมด 3 วินาที (เผื่อใช้ซ้ำ)
-        const audio = document.getElementById("sound");
-        audio.play().catch(()=>{});
-
-        setTimeout(function(){
-            window.location.href = "page3.html";
-        },3000);
-    }
-
+    // ไปหน้าพัก
+    window.location.href = "rest.html";
 }
 </script>
 
