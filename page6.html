@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="th">
 <head>
 <meta charset="UTF-8">
@@ -9,54 +8,59 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 <style>
-    body{
-        font-family: Arial, sans-serif;
-        background: rgb(36, 36, 37);
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
+body{
+    font-family: Arial, sans-serif;
+    background: rgb(36, 36, 37);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
 
-    .container{
-        background: rgb(50, 50, 52);
-        padding: 40px;
-        border-radius: 12px;
-        box-shadow: 0 0 15px rgba(0,0,0,0.3);
-        text-align: center;
-        width: 520px;
+.container{
+    background: rgb(50, 50, 52);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    text-align: center;
+    width: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+h2{
+    margin-bottom: 20px;
+}
 
-    h2{
-        margin-bottom: 20px;
-    }
+p{
+    margin-bottom: 30px;
+    font-size: 15px;
+    color: #ccc;
+}
 
-    p{
-        margin-bottom: 30px;
-        font-size: 15px;
-        color: #ccc;
-    }
+button{
+    padding: 10px 25px;
+    border: none;
+    background: #444;
+    color: white;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 5px 0; /* เว้นบรรทัดบน-ล่าง */
+    width: 200px; /* ขนาดปุ่มเท่ากัน */
+}
 
-    button{
-        padding: 10px 25px;
-        border: none;
-        background: #444;
-        color: white;
-        border-radius: 6px;
-        font-size: 16px;
-        cursor: pointer;
-        margin: 5px;
-    }
+button:hover{
+    background: #666;
+}
 
-    button:hover{
-        background: #666;
-    }
+#homeBtn{
+    display: none; /* ซ่อนตอนแรก */
+    margin-top: 50px; /* เว้นระยะห่างจากปุ่มบันทึก */
+}
 </style>
 
 </head>
@@ -65,31 +69,20 @@
 
 <div class="container">
     <h2>ขอขอบคุณสำหรับการสละเวลาของท่าน</h2>
-    <p id="statusText">ระบบกำลังบันทึกผลการทดลอง…</p>
+    <p id="statusText">กรุณากดปุ่มด้านล่างเพื่อบันทึกข้อมูลการทดลอง</p>
 
-    <button id="homeBtn" onclick="goHome()" style="display:none;">
-        กลับหน้าแรก
-    </button>
+    <!-- ปุ่มบันทึกข้อมูล -->
+    <button id="saveBtn" onclick="exportExcel()">บันทึกข้อมูล</button>
+
+    <!-- ปุ่มกลับหน้าแรก -->
+    <button id="homeBtn" onclick="goHome()">กลับหน้าแรก</button>
 </div>
 
 <script>
-
 let exported = false;
 
-window.onload = function(){
-
-    if(sessionStorage.getItem("exported")){
-        document.getElementById("statusText").innerText = "ข้อมูลถูกบันทึกแล้ว";
-        document.getElementById("homeBtn").style.display = "block";
-        return;
-    }
-
-    setTimeout(exportExcel, 800);
-};
-
 function exportExcel(){
-
-    if(exported) return;
+    if(exported) return; // ป้องกันกดซ้ำ
     exported = true;
 
     const userId = localStorage.getItem("userId") || "UNKNOWN";
@@ -123,12 +116,18 @@ function exportExcel(){
 
     XLSX.writeFile(wb, filename);
 
+    // เปลี่ยนข้อความบอกว่าเสร็จเรียบร้อย
     document.getElementById("statusText").innerText = "บันทึกข้อมูลเรียบร้อยแล้ว ✅";
 
+    // ซ่อนปุ่มบันทึก
+    document.getElementById("saveBtn").style.display = "none";
+
+    // แสดงปุ่มกลับหน้าแรก
     document.getElementById("homeBtn").style.display = "block";
 
     sessionStorage.setItem("exported","true");
 
+    // ล้าง localStorage หลังโหลดปุ่มกลับหน้าแรกแล้ว
     setTimeout(function(){
         localStorage.clear();
     },1000);
@@ -137,7 +136,6 @@ function exportExcel(){
 function goHome(){
     window.location.href = "index.html";
 }
-
 </script>
 
 </body>
