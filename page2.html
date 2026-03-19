@@ -15,9 +15,10 @@ body{
     color:white;
 }
 
+/* ปรับตำแหน่งคำถามลงเล็กน้อย */
 h2{
     text-align:center;
-    margin-top:20px;
+    margin-top:15px;
     margin-bottom:5px;
 }
 
@@ -25,9 +26,10 @@ h2{
     text-align:center;
     font-size:18px;
     opacity:0.85;
-    margin-bottom:20px;
+    margin-bottom:30px; /* เพิ่มช่องว่างลง */
 }
 
+/* ศูนย์กลางพื้นที่สี */
 .center-area{
     flex:1;
     display:flex;
@@ -37,7 +39,7 @@ h2{
 }
 
 .color-preview{
-    width:2cm;
+    width:2cm; /* เล็กน้อยใหญ่ขึ้น */
     height:2cm;
     border-radius:15px;
     border:4px solid #888;
@@ -53,26 +55,28 @@ h2{
     text-align:center;
 }
 
+/* ปรับ HSL area ให้สูงขึ้นและช่องว่างมากขึ้น */
 .hsl-area{
-    padding:30px 40px;
+    padding:20px 40px;
+    margin-top:20px; /* เลื่อนขึ้น */
 }
 
 .hsl-row{
     display:flex;
     justify-content:center;
-    gap:100px;
+    gap:150px; /* เพิ่มช่องว่างระหว่าง H/S/L */
 }
 
 .hsl-item{
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:15px; /* เพิ่มช่องว่าง label กับ slider */
 }
 
 input[type="range"]{
     -webkit-appearance:none;
     appearance:none;
-    width:250px;
+    width:220px;
     height:8px;
     background:#bfbfbf;
     border-radius:10px;
@@ -100,9 +104,7 @@ input[type="range"]::-webkit-slider-thumb{
 
 <div class="center-area">
     <div id="colorBox" class="color-preview"></div>
-
-    <p class="instruction-text">
-    </p>
+    <p class="instruction-text"></p>
 </div>
 
 <div class="hsl-area">
@@ -127,13 +129,11 @@ input[type="range"]::-webkit-slider-thumb{
 </div>
 
 <script>
-
 const hue = document.getElementById("hue");
 const sat = document.getElementById("sat");
 const light = document.getElementById("light");
 const colorBox = document.getElementById("colorBox");
 
-// เริ่มต้นเป็นสีขาวจริง
 colorBox.style.backgroundColor = "hsl(0,0%,100%)";
 
 function updateColor(){
@@ -143,7 +143,6 @@ function updateColor(){
     colorBox.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
 }
 
-// ถ้าเลื่อน H แล้ว S ยัง 0 → ทำให้เห็นสีทันที
 hue.addEventListener("input", function(){
     if(sat.value == 0){
         sat.value = 100;
@@ -155,10 +154,11 @@ hue.addEventListener("input", function(){
 sat.addEventListener("input", updateColor);
 light.addEventListener("input", updateColor);
 
-// 🔥 แก้เฉพาะตรงนี้
 colorBox.addEventListener("click", function(){
     localStorage.setItem("readyMode","true");
-    window.location.href = "pagestart.html";    
+    window.location.href = "pagestart.html";
 });
-
 </script>
+
+</body>
+</html>
