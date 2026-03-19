@@ -127,38 +127,45 @@ input[type="range"]::-webkit-slider-thumb{
 </div>
 
 <script>
+window.onload = function(){
 
-const hue = document.getElementById("hue");
-const sat = document.getElementById("sat");
-const light = document.getElementById("light");
-const colorBox = document.getElementById("colorBox");
+    const hue = document.getElementById("hue");
+    const sat = document.getElementById("sat");
+    const light = document.getElementById("light");
+    const colorBox = document.getElementById("colorBox");
 
-// เริ่มต้นเป็นสีขาวจริง
-colorBox.style.backgroundColor = "hsl(0,0%,100%)";
+    // เริ่มต้นเป็นสีขาว
+    colorBox.style.backgroundColor = "hsl(0,0%,100%)";
 
-function updateColor(){
-    const h = hue.value;
-    const s = sat.value;
-    const l = light.value;
-    colorBox.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
-}
-
-// ถ้าเลื่อน H แล้ว S ยัง 0 → ทำให้เห็นสีทันที
-hue.addEventListener("input", function(){
-    if(sat.value == 0){
-        sat.value = 100;
-        light.value = 50;
+    function updateColor(){
+        const h = hue.value;
+        const s = sat.value;
+        const l = light.value;
+        colorBox.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
     }
+
+    hue.addEventListener("input", function(){
+        if(sat.value == 0){
+            sat.value = 100;
+            light.value = 50;
+        }
+        updateColor();
+    });
+
+    sat.addEventListener("input", updateColor);
+    light.addEventListener("input", updateColor);
+
+    // เรียกครั้งแรก
     updateColor();
-});
 
-sat.addEventListener("input", updateColor);
-light.addEventListener("input", updateColor);
+    // ไปหน้าคำถาม (ไม่มีพัก)
+    colorBox.addEventListener("click", function(){
+        localStorage.removeItem("readyMode");
+        window.location.href = "page3.html";
+    });
 
-// 🔥 แก้เฉพาะตรงนี้
-colorBox.addEventListener("click", function(){
-    window.location.href = "page5.html";
-});
-});
-
+};
 </script>
+
+</body>
+</html>
